@@ -1,0 +1,148 @@
+<ion-header>
+  <ion-navbar [color]="'head'">
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title center>Dashboard</ion-title>
+    <ion-buttons right>
+      <img alt="logo" height="40" src="assets/imgs/{{companyId}}.png">
+    </ion-buttons>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top [color]="isAndroid ? 'royal' : 'masters'">
+    <ion-segment [(ngModel)]="category" [color]="'head'">
+      <ion-segment-button value="company">
+        Create Company
+      </ion-segment-button>
+      <ion-segment-button value="admin">
+        User Admin
+      </ion-segment-button>
+      <!-- <ion-segment-button value="receipts">
+        Receipts
+      </ion-segment-button> -->
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="bg" color="red">
+  <div [ngSwitch]="category">
+    <div *ngSwitchCase="'company' || showData == true">
+      <form (ngSubmit)="doSignup(registerForm)" #registerForm="ngForm">
+        <ion-item>
+          <ion-label stacked>Company ID</ion-label>
+          <ion-input [(ngModel)]="company_details.companyID" name="companyID" type="text" placeholder="Company ID" required></ion-input>
+        </ion-item>
+        <br />
+        <ion-item>
+          <ion-label stacked>Company Name</ion-label>
+          <ion-input [(ngModel)]="company_details.companyName" name="companyName" type="text" placeholder="Company Name" required></ion-input>
+        </ion-item>
+        <br />
+        <ion-item>
+          <ion-label stacked>Email 1</ion-label>
+          <ion-input [(ngModel)]="company_details.email1" name="email1" type="email" placeholder="First Email" required></ion-input>
+        </ion-item>
+        <br />
+        <ion-item>
+          <ion-label stacked>Email 2</ion-label>
+          <ion-input [(ngModel)]="company_details.email2" name="email2" type="email" placeholder="Second Email" required></ion-input>
+        </ion-item>
+        <br />
+        <p style="color:red">{{error_message}}</p>
+        <button ion-button block type="submit" [color]="'head'" [disabled]="!registerForm.valid">
+          Create
+        </button>
+      </form>
+    </div>
+    <ion-list *ngSwitchCase="'admin'">
+      <!-- <button ion-item *ngFor="let item of userList.users; let i = index" class="border-shade">
+        <p>{{ item.companyId}}</p>
+        <p>{{ item.userName}}</p>
+        <p>{{ item.roleName }}</p>
+        <p>{{ item.userStatus }}</p>
+        <button ion-button clear item-end color="danger" (click)="onUpdateUser(item)">Activate</button>
+      </button> -->
+      <!-- </ion-list> -->
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <h5>Company ID</h5>
+          </ion-col>
+          <!-- <ion-col>
+            <h5>Company</h5>
+          </ion-col> -->
+          <ion-col>
+            <h5>User Name</h5>
+          </ion-col>
+          <ion-col>
+            <h5>Role</h5>
+          </ion-col>
+          <!-- <ion-col>
+            <h5>Status</h5>
+          </ion-col> -->
+          <ion-col>
+            <h5>Status</h5>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <div *ngFor="let item of userList.users; let i = index">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              {{ item.companyId}}
+            </ion-col>
+            <!-- <ion-col>
+              {{ item.companyName}}
+            </ion-col> -->
+            <ion-col>
+              {{ item.userName}}
+            </ion-col>
+            <ion-col>
+              {{ item.userStatus}}
+              <!-- <ion-item>
+                <ion-label>A</ion-label>
+                <ion-radio checked="true" value="go"></ion-radio>
+              </ion-item> -->
+              <!-- <ion-item>
+                <ion-label>S</ion-label>
+                <ion-radio value="rust"></ion-radio>
+              </ion-item> -->
+            </ion-col>
+            <ion-col>
+              <button ion-button block type="submit" [color]="'head'" (click)="onUpdateUser(item,item.companyId)">
+                Activate
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ion-list>
+    <!-- <ion-list *ngSwitchCase="'receipts'">
+      <ion-grid>
+        <ion-row>
+          <ion-col><h5>Date</h5></ion-col>
+          <ion-col><h5>Amount</h5></ion-col>
+          <ion-col><h5>Voucher #</h5></ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-item *ngFor="let item of customer_details?.receipts; let i = index" class="border-shade">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              {{ item.date}}
+            </ion-col>
+            <ion-col>
+              {{ displayINR(item.amount)}}
+            </ion-col>
+            <ion-col>
+              {{ item.voucherNumber}}
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list> -->
+  </div>
+</ion-content>
