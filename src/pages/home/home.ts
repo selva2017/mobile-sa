@@ -71,6 +71,11 @@ export class HomePage {
     // .then(
     // (token: string) => {
     this.showLoader();
+    this.refreshUsers();
+    // }
+    // );
+  }
+  refreshUsers() {
     this.authService.getAllUsers()
       .subscribe(
         (list) => {
@@ -83,10 +88,13 @@ export class HomePage {
           this.handleError(error.json().error);
         }
       );
-    // }
-    // );
   }
-  doSignup() {
+  onClick(){
+    // console.log("tab click");
+    this.refreshUsers();
+
+  }
+  createCompany() {
     this.showLoader();
     // console.log(this.company_details);
     this.authService.createNewCompany(this.company_details)
@@ -100,7 +108,7 @@ export class HomePage {
           this.company_details.email1 = "";
           this.company_details.email2 = "";
           this.loading.dismiss();
-          this.handleError("success");
+          this.handleError("company");
         },
         (error) => {
           this.loading.dismiss();
@@ -112,13 +120,14 @@ export class HomePage {
     row['userStatus'] = 'active';
     row['role'] = '1';
     this.showLoader();
-    this.authService.updateUser(row,companyId)
+    this.authService.updateUser(row, companyId)
       .subscribe(
         // (res: Daybook) => console.log(res),
         (success) => {
           // console.log("success");
-          this.loading.dismiss();
-          this.handleError("success");
+          this.refreshUsers();
+          // this.loading.dismiss();
+          this.handleError("activate");
         },
         (error) => {
           this.loading.dismiss();
@@ -129,9 +138,17 @@ export class HomePage {
   // this.data1 = [this.prodStatistics[0].stockWeek, this.prodStatistics[0].stockMonth, this.prodStatistics[0].stockQuarter, this.prodStatistics[0].stockYear];
   // }
   private handleError(errorMessage: string) {
-    var title_details = "User Creation!";
-    if (errorMessage != "success") {
-      title_details = "Network Connection error!";
+    var title_details;
+    if (errorMessage == "activate") {
+      title_details = "User Activation!";
+      title_details = "User Activation successful!";
+    }
+    else if (this.error_message == "company"){
+      title_details = "Company Creation!";
+      errorMessage = "Company Creation is successful!"
+    }
+    else {
+
     }
     const alert = this.alertCtrl.create({
       title: title_details,
@@ -176,7 +193,7 @@ export class HomePage {
   presentToast(msg) {
     let toast = this.toastCtrl.create({
       message: msg,
-      duration: 5000,
+      duration: 10000,
       position: 'bottom',
       dismissOnPageChange: true
     });

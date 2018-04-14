@@ -16,7 +16,7 @@
       <ion-segment-button value="company">
         Create Company
       </ion-segment-button>
-      <ion-segment-button value="admin">
+      <ion-segment-button value="admin" (click)="onClick()">
         User Admin
       </ion-segment-button>
       <!-- <ion-segment-button value="receipts">
@@ -29,7 +29,7 @@
 <ion-content padding class="bg" color="red">
   <div [ngSwitch]="category">
     <div *ngSwitchCase="'company' || showData == true">
-      <form (ngSubmit)="doSignup(registerForm)" #registerForm="ngForm">
+      <form (ngSubmit)="createCompany(registerForm)" #registerForm="ngForm">
         <ion-item>
           <ion-label stacked>Company ID</ion-label>
           <ion-input [(ngModel)]="company_details.companyID" name="companyID" type="text" placeholder="Company ID" required></ion-input>
@@ -88,6 +88,7 @@
         </ion-row>
       </ion-grid>
       <div *ngFor="let item of userList.users; let i = index">
+        <div *ngIf="item.userStatus == 'inactive'">
         <ion-grid>
           <ion-row>
             <ion-col>
@@ -111,12 +112,13 @@
               </ion-item> -->
             </ion-col>
             <ion-col>
-              <button ion-button block type="submit" [color]="'head'" (click)="onUpdateUser(item,item.companyId)">
-                Activate
+              <button ion-button block type="submit" [color]="'head'" (click)="onUpdateUser(item,item.companyId)"
+              [disabled]="item.userStatus == 'active'">Activate
               </button>
             </ion-col>
           </ion-row>
         </ion-grid>
+      </div>
       </div>
     </ion-list>
     <!-- <ion-list *ngSwitchCase="'receipts'">
